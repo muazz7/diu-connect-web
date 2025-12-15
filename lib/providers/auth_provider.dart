@@ -1,8 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+import '../core/config.dart';
 
 class AuthProvider with ChangeNotifier {
   String? _token;
@@ -15,16 +17,8 @@ class AuthProvider with ChangeNotifier {
   String? get userId => _userId;
   String? get role => _role;
 
-  // Dynamic Base URL handling
-  String get baseUrl {
-    if (kIsWeb) {
-      return 'http://localhost:3000/api';
-    } else if (Platform.isAndroid) {
-      return 'http://10.0.2.2:3000/api';
-    } else {
-      return 'http://localhost:3000/api'; // Fallback for iOS simulator
-    }
-  }
+  // Dynamic Base URL handling via AppConfig
+  String get baseUrl => AppConfig.baseUrl;
 
   Future<bool> login(String email, String password) async {
     try {
